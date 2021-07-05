@@ -329,13 +329,14 @@ jobs:
           at: .
       - run:
           name: Install dependencies
-          working_directory: /tmp
+          working_directory: ./.circleci/ansible
           command: |
             apk add --update ansible curl rsync openssh nodejs npm
             ansible --version
             pip3 install --upgrade pip
             pip3 install awscli
             aws --version 
+            export ANSIBLE_HOST_KEY_CHECKING=False
       - run:
           name: Install dependencies
           command: |
@@ -344,6 +345,9 @@ jobs:
           name: Deploy backend
           working_directory: ./.circleci/ansible
           command: |
+            export ANSIBLE_HOST_KEY_CHECKING=False 
+            export host_key_checking=False
+            export record_host_keys=False
             cat inventory
             ansible-playbook -i inventory deploy-backend.yml -vv
       - destroy-environment:
