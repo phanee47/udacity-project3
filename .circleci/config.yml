@@ -274,7 +274,7 @@ jobs:
               echo "DB migration failed, please verify setup! Probably the database already exists. Verify setup!"
               curl -H "Content-Type: text/plain" -H "token: c9c28e9f-179a-42bb-a78c-55671d15c8b7" --request PUT --data "failure" https://api.memstash.io/values/DB_MIGRATION_${CIRCLE_WORKFLOW_ID:0:7}
             fi
-            echo "WorkflowID=${CIRCLE_WORKFLOW_ID:0:7}   
+            echo "WorkflowID=${CIRCLE_WORKFLOW_ID:0:7}"   
       - destroy-environment:
           id: ${CIRCLE_WORKFLOW_ID:0:7}
           when: on_fail      
@@ -443,55 +443,55 @@ jobs:
 workflows:
   default:
     jobs:
-       - install-backend-dependencies
-       - install-frontend-dependencies
-       - build-frontend:
-           requires:
-             - install-frontend-dependencies
-       - build-backend:
-           requires:
-             - install-backend-dependencies
-       - test-frontend:
-           requires: 
-             - build-frontend
-       - test-backend:
-           requires: 
-             - build-backend
-       - scan-backend:
-           requires: 
-             - build-backend
-       - scan-frontend:
-           requires: 
-             - build-frontend
-       - deploy-infrastructure:
-           requires: 
-             - test-frontend 
-             - test-backend 
-             - scan-frontend 
-             - scan-backend
-           filters:
-             branches:
-               only: 
-                 - master
-       - configure-infrastructure:
-           requires: 
-             - deploy-infrastructure
-       - run-migrations:
-           requires: 
-             - configure-infrastructure
-       - deploy-frontend:
-           requires: 
-             - run-migrations
-       - deploy-backend:
-           requires: 
-             - run-migrations
-       - smoke-test:
-           requires: 
-             - deploy-backend 
-             - deploy-frontend
-       - cloudfront-update:
-           requires: 
-             - smoke-test
-       - cleanup:
-           requires: 
-             - cloudfront-update
+       #- install-backend-dependencies
+       #- install-frontend-dependencies
+       #- build-frontend:
+       #    requires:
+       #      - install-frontend-dependencies
+       #- build-backend:
+       #    requires:
+       #      - install-backend-dependencies
+       #- test-frontend:
+       #    requires: 
+       #      - build-frontend
+       #- test-backend:
+       #    requires: 
+       #      - build-backend
+       #- scan-backend:
+       #    requires: 
+       #      - build-backend
+       #- scan-frontend:
+       #    requires: 
+       #      - build-frontend
+       #- deploy-infrastructure:
+       #    requires: 
+       #      - test-frontend 
+       #      - test-backend 
+       #      - scan-frontend 
+       #      - scan-backend
+       #    filters:
+       #      branches:
+       #        only: 
+       #          - master
+       #- configure-infrastructure:
+       #    requires: 
+       #      - deploy-infrastructure
+        - run-migrations
+       #    requires: 
+       #      - configure-infrastructure
+       #- deploy-frontend:
+       #    requires: 
+       #      - run-migrations
+       #- deploy-backend:
+       #    requires: 
+       #      - run-migrations
+       #- smoke-test:
+       #    requires: 
+       #      - deploy-backend 
+       #      - deploy-frontend
+       #- cloudfront-update:
+       #    requires: 
+       #      - smoke-test
+       #- cleanup:
+       #    requires: 
+       #      - cloudfront-update
